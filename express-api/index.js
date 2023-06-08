@@ -13,20 +13,18 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 app.post('/ia', async (req, res) => {
-    const test = req.body.test
-    console.log(test)
+    const text = req.body.text
+    console.log(text)
 
-    const completion = await openai.createCompletion({
-        model: "text-davinci-003",
-        prompt: test,
+    const completion = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: [{role: "user", content: text}],
     });
-    responseChatGPT = completion.data.choices[0].text;
+    responseChatGPT = completion.data.choices[0].message;
     console.log(responseChatGPT);
 
     return res.json({ success: responseChatGPT });
 })
 
 const port = 8000;
-app.listen(port, () => {
-    console.log('Listening on port ' + port);
-});
+app.listen(port, () =>  console.log('Listening on port ' + port));
